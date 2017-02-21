@@ -6,9 +6,9 @@ import database
 app = Flask(__name__)
 
 
-@app.route('/programs', methods=['GET'])
+@app.route('/programs/', methods=['GET'])
 def fetchAll():
-    return database.make_query("SELECT * FROM Programmeerimiskeel")
+    return database.make_query("SELECT * FROM programmeerimiskeel")
     # return jsonify({'programs': programs})
 
 
