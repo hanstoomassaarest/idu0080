@@ -6,7 +6,7 @@ import programminglanguage
 
 
 def db_connect():
-    conn_string = "host='localhost' dbname='Programmeerimiskeel' user='postgres' password='postgres'"
+    conn_string = "host='localhost' dbname='Programmeerimiskeel' user='postgres' password=''"
     # get a connection, if a connect cannot be made an exception will be raised here
     conn = psycopg2.connect(conn_string)
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
@@ -28,11 +28,12 @@ def update(program):
 
 
 def create_objects(records):
-    result = ""
+    result = "["
     size = len(records)
     for index, record in enumerate(records):
         prlng = programminglanguage.ProgrammingLanguage(record[0], record[1], int(record[2]), record[3])
         result += (json.dumps(prlng.serialize()))
         if index < size -1:
             result += ','
+    result += "]"
     return result
