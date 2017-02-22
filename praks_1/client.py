@@ -8,6 +8,10 @@ app = Flask(__name__, static_url_path='')
 def home():
     return app.send_static_file('home.html')
 
+@app.route('/', methods = ['GET', 'OPTIONS'])
+def root():
+    return app.send_static_file('home.html')
+
 
 if __name__ == '__main__':
     port = 8000 #the custom port you want

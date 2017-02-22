@@ -1,10 +1,14 @@
 #!/usr/bin/python
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort, redirect
 from datetime import timedelta
 from flask import make_response, request, current_app
+from flask_restful.representations.json import output_json
+#pip install flask-restful
+output_json.func_globals['settings'] = {'ensure_ascii': False, 'encoding': 'utf8'}
 from functools import update_wrapper
-import database
+import database, json, sys
+from programminglanguage import ProgrammingLanguage
 
 app = Flask(__name__)
 
@@ -70,6 +74,21 @@ def fetchById(id):
         return result
     except ValueError:
         return "ID is not a number"
+
+
+
+@app.route('/programs/<int:id>/update', methods=['POST', 'OPTIONS'])
+@crossdomain(origin='*')
+def update(id):
+    jsonInput = json.loads(json.dumps(request.get_json(silent=True)))
+    if not id or not jsonInput:
+        abort(400)
+    name = str(jsonInput['name'])
+    year = str(jsonInput['year'])
+    designer = str(jsonInput['designer'])
+    program = ProgrammingLanguage(id, name, year, designer)
+    database.update(program)
+    return "success"
 
 
 if __name__ == '__main__':

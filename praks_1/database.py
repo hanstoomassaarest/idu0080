@@ -6,25 +6,31 @@ import programminglanguage
 
 
 def db_connect():
-    conn_string = "host='localhost' dbname='Programmeerimiskeel' user='postgres' password=''"
+    conn_string = "host='localhost' dbname='Programmeerimiskeel' user='postgres' password='postgres'"
     # get a connection, if a connect cannot be made an exception will be raised here
     conn = psycopg2.connect(conn_string)
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
-    return conn.cursor()
+    return conn
 
 
 def make_query(query):
-    cursor = db_connect()
+    connection = db_connect()
+    cursor = connection.cursor()
     cursor.execute(query)
-    return create_objects(cursor.fetchall())
+    objects = create_objects(cursor.fetchall())
+    cursor.close()
+    connection.close()
+    return objects
 
 
 def update(program):
-    cursor = db_connect()
-    sql = "UPDATE programmeerimiskeel SET name = %s, year = %s, designer = %s WHERE id = %s"
+    conn = db_connect()
+    cursor = conn.cursor()
+    sql = "UPDATE programmeerimiskeel SET nimi = %s, loomise_aasta = %s, disainer = %s WHERE id = %s"
     cursor.execute(sql, (program.name, program.year, program.designer, program.id))
-    cursor.commit()
+    conn.commit()
     cursor.close()
+    conn.close()
 
 
 def create_objects(records):
