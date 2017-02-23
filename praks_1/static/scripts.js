@@ -22,13 +22,7 @@
 })(jQuery);
 
 function loadInfo() {
-    // $.ajax({
-    //     dataType: 'jsonp',
-    //     url: "http://127.0.0.1:5000/programs/",
-    //     crossDomain: true,
-    //     success: function() { alert("Success"); },
-    //     error: function() { alert('Failed!'); }
-    // });
+    $( "#tbl-body" ).empty();
    ajaxQueryGetAll('http://127.0.0.1:5000/programs/');
 
 }
@@ -59,7 +53,7 @@ function ajaxQueryGetAll(url){
             });
             },
             error : function(jqXHR, textStatus, errorThrown) {
-                console.log('katki');
+                console.log('error');
             },
 
         timeout: 120000
@@ -86,7 +80,7 @@ function ajaxQueryGetById(url){
             });
             },
             error : function(jqXHR, textStatus, errorThrown) {
-                console.log('katki');
+                console.log('error');
             },
 
         timeout: 120000
@@ -96,7 +90,7 @@ function ajaxQueryGetById(url){
 function saveProgram(program, code) {
     jQuery.ajax({
         url: 'http://127.0.0.1:5000/programs/' + code + '/update',
-        headers: {"X-Requested-With": "XMLHttpRequest"},
+        headers: {"X-Requested-With": "XMLHttpPost"},
         type: 'POST',
         crossDomain: true,
         dataType: 'json',
@@ -104,8 +98,27 @@ function saveProgram(program, code) {
         data: JSON.stringify($(program).serializeFormJSON()),
         complete: function() {
             console.log("update success");
+        },
+        error : function() {
+            console.log('error');
         }
     });
-    window.location.href = 'http://127.0.0.2:8000/programmeerimiskeeled';
-    return false;
+}
+
+function addProgram(program) {
+    jQuery.ajax({
+        url: 'http://127.0.0.1:5000/programs/insert',
+        headers: {"X-Requested-With": "XMLHttpPost"},
+        type: 'POST',
+        crossDomain: true,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify($(program).serializeFormJSON()),
+        complete: function() {
+            console.log("update success");
+        },
+        error : function() {
+            console.log('error');
+        }
+    });
 }

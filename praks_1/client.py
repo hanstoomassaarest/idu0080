@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__, static_url_path='')
 
-@app.route('/programmeerimiskeeled', methods = ['GET', 'OPTIONS'])
+@app.route('/programmeerimiskeeled', methods = ['GET', 'POST', 'OPTIONS'])
 def home():
     return app.send_static_file('home.html')
 

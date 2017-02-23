@@ -57,21 +57,21 @@
 			</form>
 		</div>
 		<div class="col-md-6">
-			<form role="form" id="addFrom" method="post">
+			<form role="form" id="addForm" action = "" method="post">
 				<div class="form-group">
 					<label for="name_new">
 						Name
 					</label>
-					<input type="text" class="form-control" id="name_new" />
+					<input type="text" class="form-control" id="name_new" name="name_new" />
 					<label for="designer_new">
 						Designer
 					</label>
-					<input type="text" class="form-control" id="designer_new" />
+					<input type="text" class="form-control" id="designer_new" name="designer_new" />
 					<label for="year_new">
 						Year
 					</label>
-					<input type="year" class="form-control" id="year_new" />
-					<button type="submit" class="btn btn-default">
+					<input type="year" class="form-control" id="year_new" name="year_new"/>
+					<button type="submit" class="btn btn-default" onclick="addProgram($('#addForm'))">
 						Add
 					</button>
 				</div>

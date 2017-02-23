@@ -59,7 +59,7 @@ def crossdomain(origin=None, methods=None, headers=None,
 @app.route('/programs/', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def fetchAll():
-    return database.make_query("SELECT * FROM programmeerimiskeel")
+    return database.make_query("SELECT * FROM programmeerimiskeel ORDER BY id")
     # return jsonify({'programs': programs})
 
 
@@ -90,6 +90,19 @@ def update(id):
     database.update(program)
     return "success"
 
+@app.route('/programs/insert', methods=['POST', 'OPTIONS'])
+@crossdomain(origin='*')
+def insert():
+    jsonInput = json.loads(json.dumps(request.get_json(silent=True)))
+    if not jsonInput:
+        abort(400)
+    name = str(jsonInput['name_new'])
+    year = str(jsonInput['year_new'])
+    designer = str(jsonInput['designer_new'])
+    program = ProgrammingLanguage(id, name, year, designer)
+    database.insert(program)
+
+    return "success"
 
 if __name__ == '__main__':
     # app.run(debug=True)
