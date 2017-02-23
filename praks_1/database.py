@@ -52,3 +52,13 @@ def create_objects(records):
             result += ','
     result += "]"
     return result
+
+
+def delete(id):
+    conn = db_connect()
+    cursor = conn.cursor()
+    sql = "DELETE FROM programmeerimiskeel WHERE programmeerimiskeel.id = " + str(id)
+    cursor.execute(sql)
+    conn.commit()
+    cursor.close()
+    conn.close()

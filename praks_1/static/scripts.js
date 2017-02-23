@@ -47,8 +47,9 @@ function ajaxQueryGetAll(url){
                         '<td>' + resultData[i].id + '</td>' +
                         '<td>' + resultData[i].name + '</td>' +
                         '<td>' + resultData[i].designer + '</td>' +
-                        '<td>' + resultData[i].year + '</td>'
-                    + '</tr>'
+                        '<td>' + resultData[i].year + '</td>' +
+                        '<td><button style="z-index:999" type="submit" class="btn btn-default" onclick="deleteProgram(' + resultData[i].id + ')"> Delete</button></td>' +
+                    '</tr>'
                 );
             });
             },
@@ -119,6 +120,25 @@ function addProgram(program) {
         },
         error : function() {
             console.log('error');
+        }
+    });
+}
+
+function deleteProgram(id) {
+    jQuery.ajax({
+        url: 'http://127.0.0.1:5000/programs/' + id + '/delete',
+        headers: {"X-Requested-With": "XMLHttpPost"},
+        type: 'POST',
+        crossDomain: true,
+        // dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: 'id',
+        complete: function() {
+            loadInfo();
+            console.log("delete success");
+        },
+        error : function() {
+            // console.log('error');
         }
     });
 }

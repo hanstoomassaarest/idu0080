@@ -104,6 +104,14 @@ def insert():
 
     return "success"
 
+@app.route('/programs/<int:id>/delete', methods=['POST', 'OPTIONS'])
+@crossdomain(origin='*')
+def delete(id):
+    if not id :
+        abort(400)
+    database.delete(str(id))
+    return "success"
+
 if __name__ == '__main__':
     # app.run(debug=True)
     app.run()
