@@ -3,10 +3,11 @@
 import psycopg2
 import json
 import programminglanguage
+import db_connection
 
 
 def db_connect():
-    conn_string = "host='localhost' dbname='Programmeerimiskeel' user='postgres' password=''"
+    conn_string = db_connection.get_connection_string()
     # get a connection, if a connect cannot be made an exception will be raised here
     conn = psycopg2.connect(conn_string)
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
