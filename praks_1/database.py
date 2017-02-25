@@ -62,3 +62,39 @@ def delete(id):
     conn.commit()
     cursor.close()
     conn.close()
+
+def search(id, name, designer, year):
+    conn = db_connect()
+    cursor = conn.cursor()
+    where_clause = ""
+    id = id.encode('utf-8')
+    name = name.encode('utf-8')
+    designer = designer.encode('utf-8')
+    year = year.encode('utf-8')
+    if not id is "":
+        where_clause = " id = " + id
+    if not name is '':
+        if where_clause is "":
+            where_clause += " UPPER(nimi) LIKE UPPER('%" + name + "%')"
+        else:
+            where_clause += " AND UPPER(nimi) LIKE UPPER('%" + name + "%')"
+    if not designer is "":
+        if where_clause is "":
+            where_clause += " UPPER(disainer) LIKE UPPER('%" + designer + "%')"
+        else:
+            where_clause += " AND UPPER(disainer) LIKE UPPER('%" + designer + "%')"
+    if not year is '':
+        if where_clause is "":
+            where_clause += " loomise_aasta = " + year
+        else:
+            where_clause += " AND loomise_aasta = " + year
+    # If no search params inserted then return all
+    if where_clause is '':
+        sql = "SELECT * FROM programmeerimiskeel"
+    else:
+        sql = "SELECT * FROM programmeerimiskeel WHERE" + where_clause
+    cursor.execute(sql)
+    objects = create_objects(cursor.fetchall())
+    cursor.close()
+    conn.close()
+    return objects

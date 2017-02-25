@@ -21,9 +21,9 @@
     };
 })(jQuery);
 
-function loadInfo() {
+function loadInfo(line) {
     $( "#tbl-body" ).empty();
-   ajaxQueryGetAll('http://127.0.0.1:5000/programs/');
+   ajaxQueryGetAll('http://127.0.0.1:5000/programs/', line);
 
 }
 
@@ -31,7 +31,7 @@ function selectById(id){
     ajaxQueryGetById('http://127.0.0.1:5000/programs/' + id);
 }
 
-function ajaxQueryGetAll(url){
+function ajaxQueryGetAll(url, line){
     var res = "";
     jQuery.ajax({
         url: url,
@@ -40,6 +40,9 @@ function ajaxQueryGetAll(url){
         dataType: 'json',
         contentType: 'application/json;charset=utf-8',
         success: function(resultData) {
+            if (line !== ''){
+                // $("#body").append(line);
+            }
             $.each(resultData, function(i, item) {
               //  console.log(resultData[i]);
                 $( "#tbl-body" ).append(
@@ -48,7 +51,7 @@ function ajaxQueryGetAll(url){
                         '<td>' + resultData[i].name + '</td>' +
                         '<td>' + resultData[i].designer + '</td>' +
                         '<td>' + resultData[i].year + '</td>' +
-                        '<td><button style="z-index:999" type="submit" class="btn btn-default" onclick="deleteProgram(' + resultData[i].id + ')"> Delete</button></td>' +
+                        '<td><button style="z-index:999" type="submit" class="btn btn-danger" onclick="deleteProgram(' + resultData[i].id + ')"> Delete</button></td>' +
                     '</tr>'
                 );
             });
@@ -62,7 +65,6 @@ function ajaxQueryGetAll(url){
 }
 
 function ajaxQueryGetById(url){
-    var res = "";
     jQuery.ajax({
         url: url,
         type: "GET",
@@ -134,11 +136,20 @@ function deleteProgram(id) {
         contentType: 'application/json; charset=utf-8',
         data: 'id',
         complete: function() {
-            loadInfo();
+            loadInfo('Deleted record with id: ' + id);
             console.log("delete success");
         },
         error : function() {
             // console.log('error');
         }
     });
+}
+
+function searchPrograms(id, name, designer, year){
+    $( "#tbl-body" ).empty();
+    ajaxQueryGetAll('http://127.0.0.1:5000/programs/search/?id=' + id
+        + '&name=' + name
+        + '&designer=' + designer
+        + '&year=' + year, 'Search results');
+    // http://127.0.0.1:5000/programs/search/?id=&name=&designer=&year=
 }

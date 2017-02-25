@@ -62,6 +62,15 @@ def fetchAll():
     return database.make_query("SELECT * FROM programmeerimiskeel ORDER BY id")
     # return jsonify({'programs': programs})
 
+@app.route('/programs/search/', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
+def search():
+    id = request.args.get('id', '')
+    name = request.args.get('name', '')
+    designer = request.args.get('designer', '')
+    year = request.args.get('year', '')
+    return database.search(id, name, designer, year)
+
 
 @app.route('/programs/<int:id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
