@@ -49,7 +49,7 @@ def create_objects(records):
     for index, record in enumerate(records):
         prlng = programminglanguage.ProgrammingLanguage(record[0], record[1], int(record[2]), record[3])
         result += (json.dumps(prlng.serialize()))
-        if index < size -1:
+        if index < size - 1:
             result += ','
     result += "]"
     return result
