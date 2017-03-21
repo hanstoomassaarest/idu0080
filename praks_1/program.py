@@ -9,6 +9,7 @@ output_json.func_globals['settings'] = {'ensure_ascii': False, 'encoding': 'utf8
 from functools import update_wrapper
 import database, json, sys
 from programminglanguage import ProgrammingLanguage
+import ProgrammingLanguageExceptions
 
 app = Flask(__name__)
 
@@ -108,6 +109,10 @@ def insert():
     name = str(jsonInput['name_new'])
     year = str(jsonInput['year_new'])
     designer = str(jsonInput['designer_new'])
+    errors = ''
+    errors = errors + str(ProgrammingLanguageExceptions.CheckYear(year))
+    if not errors is '':
+        return errors
     program = ProgrammingLanguage(id, name, year, designer)
     database.insert(program)
 

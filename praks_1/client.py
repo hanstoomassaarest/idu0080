@@ -10,4 +10,4 @@ def home():
 
 if __name__ == '__main__':
     port = 8000 #the custom port you want
-    app.run(host='127.0.0.2', port=port)
+    app.run(host='127.0.0.1', port=8080)

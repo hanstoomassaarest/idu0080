@@ -99,11 +99,15 @@ function saveProgram(program, code) {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify($(program).serializeFormJSON()),
-        complete: function() {
-            console.log("update success");
+        success: function(msg) {
+            if (msg.status == "success") {
+                console.log(msg)
+            } else {
+                console.log(msg);
+            }
         },
-        error : function() {
-            console.log('error');
+        error : function(msg) {
+            console.log(msg);
         }
     });
 }
@@ -117,12 +121,18 @@ function addProgram(program) {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify($(program).serializeFormJSON()),
-        complete: function() {
-            console.log("update success");
+        success: function(msg) {
+            if (msg.status == "success") {
+                 $("#addError").empty().append('Lisatud edukalt');
+                 return true;
+            } else {
+                console.log(msg);
+            }
         },
-        error : function() {
-            console.log('error');
-        }
+        error: function (xhr, ajaxOptions, thrownError) {
+            $("#addError").empty().append(xhr.responseText);
+            return false;
+          }
     });
 }
 
