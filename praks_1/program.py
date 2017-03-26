@@ -109,10 +109,9 @@ def insert():
     name = str(jsonInput['name_new'])
     year = str(jsonInput['year_new'])
     designer = str(jsonInput['designer_new'])
-    errors = ''
-    errors = errors + str(ProgrammingLanguageExceptions.CheckYear(year))
-    if not errors is '':
-        return errors
+    error = ProgrammingLanguageExceptions.CheckYear(year)
+    if error:
+        return json.dumps({'message': error}), 400
     program = ProgrammingLanguage(id, name, year, designer)
     database.insert(program)
 

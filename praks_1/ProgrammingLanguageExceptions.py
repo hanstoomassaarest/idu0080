@@ -24,10 +24,10 @@ def CheckYear(year):
         if int(year) > 2017:
             raise ValueTooLargeError
     except ValueTooSmallError:
-        return 'Year must be later than 1900'
+        return 'yearTooSmall'
     except ValueTooLargeError:
-        return 'Year must be less than 2017'
+        return 'yearTooBig'
     except NotNumberException:
-        return 'Year must only contain numbers'
+        return 'yearNotNumber'
 
     return ''
