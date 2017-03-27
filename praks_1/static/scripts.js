@@ -22,16 +22,16 @@
 })(jQuery);
 
 function loadInfo(line) {
-    $( "#tbl-body" ).empty();
-   ajaxQueryGetAll('http://127.0.0.1:5000/programs/', line);
+    $("#tbl-body").empty();
+    ajaxQueryGetAll('http://127.0.0.1:5000/programs/', line);
 
 }
 
-function selectById(id){
+function selectById(id) {
     ajaxQueryGetById('http://127.0.0.1:5000/programs/' + id);
 }
 
-function ajaxQueryGetAll(url, line){
+function ajaxQueryGetAll(url, line) {
     var res = "";
     jQuery.ajax({
         url: url,
@@ -39,52 +39,52 @@ function ajaxQueryGetAll(url, line){
         crossDomain: true,
         dataType: 'json',
         contentType: 'application/json;charset=utf-8',
-        success: function(resultData) {
-            if (line !== ''){
+        success: function (resultData) {
+            if (line !== '') {
                 // $("#body").append(line);
             }
-            $.each(resultData, function(i, item) {
-              //  console.log(resultData[i]);
-                $( "#tbl-body" ).append(
+            $.each(resultData, function (i, item) {
+                //  console.log(resultData[i]);
+                $("#tbl-body").append(
                     '<tr onclick = selectById(' + resultData[i].id + ')>' +
-                        '<td>' + resultData[i].id + '</td>' +
-                        '<td>' + resultData[i].name + '</td>' +
-                        '<td>' + resultData[i].designer + '</td>' +
-                        '<td>' + resultData[i].year + '</td>' +
-                        '<td><button style="z-index:999" type="submit" class="btn btn-danger" onclick="deleteProgram(' + resultData[i].id + ')"> Delete</button></td>' +
+                    '<td>' + resultData[i].id + '</td>' +
+                    '<td>' + resultData[i].name + '</td>' +
+                    '<td>' + resultData[i].designer + '</td>' +
+                    '<td>' + resultData[i].year + '</td>' +
+                    '<td><button style="z-index:999" type="submit" class="btn btn-danger" onclick="deleteProgram(' + resultData[i].id + ')"> Delete</button></td>' +
                     '</tr>'
                 );
             });
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                console.log('error');
-            },
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error');
+        },
 
         timeout: 120000
     });
 }
 
-function ajaxQueryGetById(url){
+function ajaxQueryGetById(url) {
     jQuery.ajax({
         url: url,
         type: "GET",
         crossDomain: true,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        success: function(resultData) {
+        success: function (resultData) {
             //console.log(resultData)
-            $.each(resultData, function(i, item) {
-              //  console.log("item " + item);
+            $.each(resultData, function (i, item) {
+                //  console.log("item " + item);
                 $('#id').val(resultData[i].id);
                 $('#name').val(resultData[i].name);
                 $('#designer').val(resultData[i].designer);
                 $('#year').val(resultData[i].year);
 
             });
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                console.log('error');
-            },
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error');
+        },
 
         timeout: 120000
     });
@@ -99,14 +99,14 @@ function saveProgram(program, code) {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify($(program).serializeFormJSON()),
-        success: function(msg) {
+        success: function (msg) {
             if (msg.status == "success") {
                 console.log(msg)
             } else {
                 console.log(msg);
             }
         },
-        error : function(msg) {
+        error: function (msg) {
             console.log(msg);
         }
     });
@@ -114,7 +114,7 @@ function saveProgram(program, code) {
 
 function addProgram(program) {
     var $addErrorElement = $("#addError"),
-        getErrorMessage = function(responseTextJSON) {
+        getErrorMessage = function (responseTextJSON) {
             var errorMessage = JSON.parse(responseTextJSON).message;
 
             switch (errorMessage) {
@@ -124,10 +124,16 @@ function addProgram(program) {
                     return 'The year number must be smaller';
                 case 'yearNotNumber':
                     return 'Please enter a valid number as year';
+                case 'allFieldsMandatory':
+                    return 'Name, designer and year fields are mandatory';
+                case 'nameIsMandatory':
+                    return 'Name is mandatory';
+                case 'designerIsMandatory':
+                    return 'Designer is mandatory';
                 default:
                     return 'Something went wrong';
             }
-    }
+        }
 
     $addErrorElement.empty();
     jQuery.ajax({
@@ -138,18 +144,16 @@ function addProgram(program) {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify($(program).serializeFormJSON()),
-        success: function(msg) {
+        success: function (msg) {
             if (msg.status == "success") {
-                 $("#addError").empty().append('Lisatud edukalt');
-                 return true;
+                $("#addError").empty().append('Lisatud edukalt');
+                return true;
             } else {
                 console.log(msg);
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status === 400) {
-                
-
                 $addErrorElement.append('Your request was invalid <br>');
                 $addErrorElement.append(getErrorMessage(xhr.responseText));
             }
@@ -167,18 +171,18 @@ function deleteProgram(id) {
         // dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: 'id',
-        complete: function() {
+        complete: function () {
             loadInfo('Deleted record with id: ' + id);
             console.log("delete success");
         },
-        error : function() {
+        error: function () {
             // console.log('error');
         }
     });
 }
 
-function searchPrograms(id, name, designer, year){
-    $( "#tbl-body" ).empty();
+function searchPrograms(id, name, designer, year) {
+    $("#tbl-body").empty();
     ajaxQueryGetAll('http://127.0.0.1:5000/programs/search/?id=' + id
         + '&name=' + name
         + '&designer=' + designer

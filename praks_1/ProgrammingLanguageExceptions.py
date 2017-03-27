@@ -1,21 +1,39 @@
-
 class Error(Exception):
-   """Base class for other exceptions"""
-   pass
+    """Base class for other exceptions"""
+    pass
+
 
 class ValueTooSmallError(Error):
-   """Raised when the input value is too small"""
-   pass
+    """Raised when the input value is too small"""
+    pass
+
 
 class ValueTooLargeError(Error):
-   """Raised when the input value is too large"""
-   pass
+    """Raised when the input value is too large"""
+    pass
+
+
 class NotNumberException(Error):
-   """Raised when the input value is not integer"""
-   pass
+    """Raised when the input value is not integer"""
+    pass
+
+
+class NameException(Error):
+    """Raised when name is empty"""
+    pass
+
+
+class DesignerException(Error):
+    """Raised when designer is empty"""
+    pass
+
+
+class AllMandatoryException(Error):
+    """Raised when all fields are empty"""
+    pass
+
 
 def CheckYear(year):
-    value = 0.
     try:
         if not year.isdigit():
             raise NotNumberException
@@ -29,5 +47,24 @@ def CheckYear(year):
         return 'yearTooBig'
     except NotNumberException:
         return 'yearNotNumber'
+    return 'OK'
 
-    return ''
+
+def checkAllMandatory(name, designer, year):
+    try:
+        if year == '' and name == '' and designer == '':
+            raise AllMandatoryException
+    except AllMandatoryException:
+        return 'allFieldsMandatory'
+    yearResult = CheckYear(year)
+    if not yearResult == 'OK':
+        return yearResult
+    try:
+        if name == '':
+            raise NameException
+        if designer == '':
+            raise DesignerException
+    except NameException:
+        return 'nameIsMandatory'
+    except DesignerException:
+        return 'designerIsMandatory'

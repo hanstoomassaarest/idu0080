@@ -4,7 +4,8 @@ from flask import Flask, jsonify, abort, redirect
 from datetime import timedelta
 from flask import make_response, request, current_app
 from flask_restful.representations.json import output_json
-#pip install flask-restful
+
+# pip install flask-restful
 output_json.func_globals['settings'] = {'ensure_ascii': False, 'encoding': 'utf8'}
 from functools import update_wrapper
 import database, json, sys
@@ -13,10 +14,10 @@ import ProgrammingLanguageExceptions
 
 app = Flask(__name__)
 
+
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
                 automatic_options=True):
-
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, basestring):
@@ -54,6 +55,7 @@ def crossdomain(origin=None, methods=None, headers=None,
 
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
+
     return decorator
 
 
@@ -62,6 +64,7 @@ def crossdomain(origin=None, methods=None, headers=None,
 def fetchAll():
     return database.make_query("SELECT * FROM programmeerimiskeel ORDER BY id")
     # return jsonify({'programs': programs})
+
 
 @app.route('/programs/search/', methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -86,7 +89,6 @@ def fetchById(id):
         return "ID is not a number"
 
 
-
 @app.route('/programs/<int:id>/update', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def update(id):
@@ -100,6 +102,7 @@ def update(id):
     database.update(program)
     return "success"
 
+
 @app.route('/programs/insert', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def insert():
@@ -109,13 +112,14 @@ def insert():
     name = str(jsonInput['name_new'])
     year = str(jsonInput['year_new'])
     designer = str(jsonInput['designer_new'])
-    error = ProgrammingLanguageExceptions.CheckYear(year)
+    error = ProgrammingLanguageExceptions.checkAllMandatory(name, designer, year)
     if error:
         return json.dumps({'message': error}), 400
     program = ProgrammingLanguage(id, name, year, designer)
     database.insert(program)
 
     return "success"
+
 
 @app.route('/programs/<int:id>/delete', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -124,6 +128,7 @@ def delete(id):
         abort(400)
     database.delete(str(id))
     return "success"
+
 
 if __name__ == '__main__':
     # app.run(debug=True)
