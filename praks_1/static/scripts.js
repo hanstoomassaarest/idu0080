@@ -113,6 +113,23 @@ function saveProgram(program, code) {
 }
 
 function addProgram(program) {
+    var $addErrorElement = $("#addError"),
+        getErrorMessage = function(responseTextJSON) {
+            var errorMessage = JSON.parse(responseTextJSON).message;
+
+            switch (errorMessage) {
+                case 'yearTooSmall':
+                    return 'The year number must be over 1900';
+                case 'yearTooBig':
+                    return 'The year number must be smaller';
+                case 'yearNotNumber':
+                    return 'Please enter a valid number as year';
+                default:
+                    return 'Something went wrong';
+            }
+    }
+
+    $addErrorElement.empty();
     jQuery.ajax({
         url: 'http://127.0.0.1:5000/programs/insert',
         headers: {"X-Requested-With": "XMLHttpPost"},
@@ -130,9 +147,14 @@ function addProgram(program) {
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            $("#addError").empty().append(xhr.responseText);
+            if (xhr.status === 400) {
+                
+
+                $addErrorElement.append('Your request was invalid <br>');
+                $addErrorElement.append(getErrorMessage(xhr.responseText));
+            }
             return false;
-          }
+        }
     });
 }
 
