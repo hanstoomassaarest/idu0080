@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 import pika
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-channel = connection.channel()
 
-channel.queue_declare(queue='hello')
+def sendErrorToQue(errorCode):
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
 
-channel.basic_publish(exchange='',
-                      routing_key='hello',
-                      body='Hello World!')
-print(" [x] Sent 'Hello World!'")
+    channel.queue_declare(queue='errors')
 
-connection.close()
+    channel.basic_publish(exchange='',
+                          routing_key='errors',
+                          body=errorCode)
+
+    connection.close()

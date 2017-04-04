@@ -1,3 +1,5 @@
+import sendToQue
+
 class Error(Exception):
     """Base class for other exceptions"""
     pass
@@ -42,7 +44,8 @@ def CheckYear(year):
         if int(year) > 2017:
             raise ValueTooLargeError
     except ValueTooSmallError:
-        return 'yearTooSmall'
+        sendToQue.sendErrorToQue('yearTooSmall')
+        return ''
     except ValueTooLargeError:
         return 'yearTooBig'
     except NotNumberException:
