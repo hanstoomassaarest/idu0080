@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
-import psycopg2
 import json
-import programminglanguage
+
+import psycopg2
+
 import db_connection
+import programminglanguage
 
 
 def db_connect():
