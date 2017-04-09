@@ -5,7 +5,11 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(
         host='localhost'))
 channel = connection.channel()
 
-channel.queue_declare(queue='hello')
+channel.exchange_declare(exchange='errors',
+                         type='fanout')
+
+channel.queue_bind(exchange='errors',
+                   queue='errors')
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)

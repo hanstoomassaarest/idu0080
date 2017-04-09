@@ -1,5 +1,3 @@
-import urllib2
-
 from flask import Flask, jsonify
 
 app = Flask(__name__, static_url_path='')
