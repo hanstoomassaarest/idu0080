@@ -2,5 +2,10 @@
 .idea/
 db_connection.py
 venv
+<<<<<<< HEAD
 praks_1/database.sql
 db_connection.py
+=======
+database.sql
+.pyc
+>>>>>>> 67feb5394608ac142e959b0aa4ee437a958814d3

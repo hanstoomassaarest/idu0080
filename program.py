@@ -1,14 +1,15 @@
 #!/usr/bin/python
 
-from flask import Flask, jsonify, abort, redirect
 from datetime import timedelta
+
+from flask import Flask, abort
 from flask import make_response, request, current_app
 from flask_restful.representations.json import output_json
 
 # pip install flask-restful
 output_json.func_globals['settings'] = {'ensure_ascii': False, 'encoding': 'utf8'}
 from functools import update_wrapper
-import database, json, sys
+import database, json
 from programminglanguage import ProgrammingLanguage
 import ProgrammingLanguageExceptions
 
