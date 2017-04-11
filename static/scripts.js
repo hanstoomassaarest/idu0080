@@ -207,7 +207,7 @@ $(document).ready(function() {
     };
 
     var on_error =  function() {
-        addErrorMessage(errorMessage);
+        addErrorMessage('Error');
     };
 
 /*    $('#sendRabbitMessageTest').on('click', function(){
