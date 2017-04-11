@@ -131,7 +131,7 @@ function addProgram(program) {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status === 400) {
-                console.log(getErrorMessage(xhr.responseText));
+                console.log(xhr.responseText);
             }
             return false;
         }
