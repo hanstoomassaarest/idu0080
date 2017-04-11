@@ -169,7 +169,7 @@ function searchPrograms(id, name, designer, year) {
 function addErrorMessage(errorMessageShort) {
     var $addErrorElement = $("#addError"),
         getErrorMessage = function (errorMessage) {
-            console.log(errorMessage);
+            console.log('Converting ' + errorMessage + ' to proper sentence');
             switch (errorMessage) {
                 case 'yearTooSmall':
                     return 'The year number must be over 1900';
@@ -201,6 +201,7 @@ $(document).ready(function() {
 
     var on_connect = function(x) {
       id = client.subscribe("/exchange/errors", function(errorMessage) {
+        console.log('Got a response from message from RABBIT- ', errorMessage.body);
         addErrorMessage(errorMessage.body);
       });
     };
