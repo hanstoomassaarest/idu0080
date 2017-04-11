@@ -12,6 +12,7 @@ from functools import update_wrapper
 import database, json
 from programminglanguage import ProgrammingLanguage
 import ProgrammingLanguageExceptions
+import sendToQue
 
 app = Flask(__name__)
 
@@ -119,6 +120,7 @@ def insert():
     program = ProgrammingLanguage(id, name, year, designer)
     database.insert(program)
 
+    sendToQue.sendErrorToQue('success')
     return "success"
 
 

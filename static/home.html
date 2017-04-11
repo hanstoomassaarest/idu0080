@@ -90,7 +90,6 @@
 					<button type="button" class="btn btn-default" onclick="addProgram($('#addForm'))">
 						Add
 					</button>
-					<a class="btn btn-warning" id="sendRabbitMessageTest">Send RabbitMQ</a>
 				</div>
 			</form>
 		</div>
@@ -100,28 +99,4 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="scripts.js"></script>
 <script src="stomp.js"></script>
-<script type="text/javascript">
-	// TEST!
-	var ws = new WebSocket('ws://127.0.0.1:15674/ws');
-	var client = Stomp.over(ws);
-
-	var on_connect = function(x) {
-	  id = client.subscribe("/exchange/errors", function(d) {
-	       console.log('New message incoming', d.body);
-	  });
-	};
-
-	var on_error =  function() {
-		console.log('error');
-	};
-
-	$('#sendRabbitMessageTest').on('click', function(){
-		var message = JSON.stringify($('#addForm').serializeFormJSON());
-
-		console.log('message sent', message);
-		client.send('/exchange/errors', {"content-type":"text/plain"}, message);
-	});
-
-	client.connect('guest', 'guest', on_connect, on_error, '/');
-</script>
 </html>

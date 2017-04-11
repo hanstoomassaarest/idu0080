@@ -113,29 +113,6 @@ function saveProgram(program, code) {
 }
 
 function addProgram(program) {
-    var $addErrorElement = $("#addError"),
-        getErrorMessage = function (responseTextJSON) {
-            var errorMessage = JSON.parse(responseTextJSON).message;
-
-            switch (errorMessage) {
-                case 'yearTooSmall':
-                    return 'The year number must be over 1900';
-                case 'yearTooBig':
-                    return 'The year number must be smaller';
-                case 'yearNotNumber':
-                    return 'Please enter a valid number as year';
-                case 'allFieldsMandatory':
-                    return 'Name, designer and year fields are mandatory';
-                case 'nameIsMandatory':
-                    return 'Name is mandatory';
-                case 'designerIsMandatory':
-                    return 'Designer is mandatory';
-                default:
-                    return 'Something went wrong';
-            }
-        }
-
-    $addErrorElement.empty();
     jQuery.ajax({
         url: 'http://127.0.0.1:5000/programs/insert',
         headers: {"X-Requested-With": "XMLHttpPost"},
@@ -146,7 +123,7 @@ function addProgram(program) {
         data: JSON.stringify($(program).serializeFormJSON()),
         success: function (msg) {
             if (msg.status == "success") {
-                $("#addError").empty().append('Lisatud edukalt');
+                console.log('Success');
                 return true;
             } else {
                 console.log(msg);
@@ -154,8 +131,7 @@ function addProgram(program) {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status === 400) {
-                $addErrorElement.append('Your request was invalid <br>');
-                $addErrorElement.append(getErrorMessage(xhr.responseText));
+                console.log(getErrorMessage(xhr.responseText));
             }
             return false;
         }
@@ -189,3 +165,55 @@ function searchPrograms(id, name, designer, year) {
         + '&year=' + year, 'Search results');
     // http://127.0.0.1:5000/programs/search/?id=&name=&designer=&year=
 }
+
+function addErrorMessage(errorMessageShort) {
+    var $addErrorElement = $("#addError"),
+        getErrorMessage = function (errorMessage) {
+            console.log(errorMessage);
+            switch (errorMessage) {
+                case 'yearTooSmall':
+                    return 'The year number must be over 1900';
+                case 'yearTooBig':
+                    return 'The year number must be smaller';
+                case 'yearNotNumber':
+                    return 'Please enter a valid number as year';
+                case 'allFieldsMandatory':
+                    return 'Name, designer and year fields are mandatory';
+                case 'nameIsMandatory':
+                    return 'Name is mandatory';
+                case 'designerIsMandatory':
+                    return 'Designer is mandatory';
+                case 'success':
+                    return 'All good! Refresh the page';
+                default:
+                    return 'Something went wrong';
+            }
+        }
+
+        $addErrorElement.empty();
+        $addErrorElement.html(getErrorMessage(errorMessageShort));
+}
+
+$(document).ready(function() {
+    // Start a STOMP server over Websocket
+    var ws = new WebSocket('ws://127.0.0.1:15674/ws');
+    var client = Stomp.over(ws);
+
+    var on_connect = function(x) {
+      id = client.subscribe("/exchange/errors", function(errorMessage) {
+        addErrorMessage(errorMessage.body);
+      });
+    };
+
+    var on_error =  function() {
+        addErrorMessage(errorMessage);
+    };
+
+/*    $('#sendRabbitMessageTest').on('click', function(){
+        var message = JSON.stringify($('#addForm').serializeFormJSON());
+
+        client.send('/exchange/errors', {"content-type":"text/plain"}, message);
+    });*/
+
+    client.connect('guest', 'guest', on_connect, on_error, '/');
+});
