@@ -8,7 +8,7 @@ def sendErrorToQue(errorCode):
 
     channel.queue_declare(queue='errors')
 
-    channel.basic_publish(exchange='',
+    channel.basic_publish(exchange='errors',
                           routing_key='errors',
                           body=errorCode)
 

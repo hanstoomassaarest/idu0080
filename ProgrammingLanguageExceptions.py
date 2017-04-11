@@ -45,10 +45,12 @@ def CheckYear(year):
             raise ValueTooLargeError
     except ValueTooSmallError:
         sendToQue.sendErrorToQue('yearTooSmall')
-        return ''
+        return 'yearTooSmall'
     except ValueTooLargeError:
+        sendToQue.sendErrorToQue('yearTooBig')
         return 'yearTooBig'
     except NotNumberException:
+        sendToQue.sendErrorToQue('yearNotNumber')
         return 'yearNotNumber'
     return 'OK'
 
@@ -58,6 +60,7 @@ def checkAllMandatory(name, designer, year):
         if year == '' and name == '' and designer == '':
             raise AllMandatoryException
     except AllMandatoryException:
+        sendToQue.sendErrorToQue('allFieldsMandatory')
         return 'allFieldsMandatory'
     yearResult = CheckYear(year)
     if not yearResult == 'OK':
@@ -68,6 +71,8 @@ def checkAllMandatory(name, designer, year):
         if designer == '':
             raise DesignerException
     except NameException:
+        sendToQue.sendErrorToQue('nameIsMandatory')
         return 'nameIsMandatory'
     except DesignerException:
+        sendToQue.sendErrorToQue('designerIsMandatory')
         return 'designerIsMandatory'
