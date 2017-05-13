@@ -1,8 +1,0 @@
-# Created by .ignore support plugin (hsz.mobi)
-.idea/
-db_connection.py
-venv
-praks_1/database.sql
-db_connection.py
-database.sql
-.pyc
