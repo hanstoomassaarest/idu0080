@@ -16,6 +16,7 @@ import TransportOrderServiceClient.TransportOrderService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class MainController {
 
@@ -25,16 +26,24 @@ public class MainController {
      * @param args
      * @throws MalformedURLException_Exception
      */
+    public static Logger logger = Logger.getLogger("MainControllerLogger");
+
     public static void main(String[] args) throws MalformedURLException_Exception {
         int orderId = 1;
         if (orderId < 5) {
+            logger.info("Alustame orderi saamist");
             Order order = getOrder(orderId);
+            logger.info("Prindime orderi");
             printOrder(order);
+            logger.info("Tekitame couriers listi");
             List<Courier> couriers = getAllCouriers();
             printCouriers(couriers);
+            logger.info("Tekitame offerite listi");
             List<FullOffer> offers = getAllOffers(order, couriers);
+            logger.info("Alustame parima offeri saamist");
             FullOffer bestOffer = getBestFullOffer(offers);
             bestOffer = orderTransport(bestOffer);
+            logger.info("Checkout orders");
             checkOutOrder(bestOffer, orderId);
         }
     }

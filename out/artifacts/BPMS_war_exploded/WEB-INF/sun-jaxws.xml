@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime' version='2.0'>
+    <endpoint
+            name="OrderService"
+            implementation="OrderService.OrderServiceImpl"
+            url-pattern="/OrderService"/>
+    <endpoint
+            name="CourierService"
+            implementation="CourierService.CourierServiceImpl"
+            url-pattern="/CourierService"/>
+    <endpoint
+            name="MyCourierService"
+            implementation="MyCourierService.MyCourierServiceImpl"
+            url-pattern="/MyCourierService"/>
+    <endpoint
+            name="OfferService"
+            implementation="OfferService.OfferServiceImpl"
+            url-pattern="/OfferService"/>
+    <endpoint
+            name="TransportOrderService"
+            implementation="TransportOrderService.TransportOrderServiceImpl"
+            url-pattern="/TransportOrderService"/>
+    <endpoint
+            name="OrderShipmentService"
+            implementation="OrderShipmentService.OrderShipmentServiceImpl"
+            url-pattern="/OrderShipmentService"/>
+</endpoints>
