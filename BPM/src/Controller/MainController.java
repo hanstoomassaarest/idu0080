@@ -60,7 +60,7 @@ public class MainController {
         shipment.setTransportPrice(offer.getOffer().getPrice());
         service.getOrderShipmentServicePort().insertOrderShipment(shipment);
 
-        System.out.println("\nOrder chckout : "
+        System.out.println("\nOrder checkout : "
                 + "\n Group name: " + shipment.getRyhmaName()
                 + "\n Approximate delivery time: " + shipment.getApproximateDeliveryTime()
                 + "\n Courier: " + shipment.getCourierName()
